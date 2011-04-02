@@ -47,6 +47,10 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 		return null;
 	}
 
+	public void removeStr(String key) {
+		this.jedis.del(key);
+	}
+
 	private byte[] getKey(String key) {
 		return key.getBytes();
 	}

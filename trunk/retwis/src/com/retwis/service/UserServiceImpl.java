@@ -55,8 +55,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		String id = super.getStr(userName);
 
 		if (id == null || id.endsWith(""))
-			return 0L;
+			return -1L;
 
 		return Long.valueOf(id);
+	}
+
+	public boolean checkExistByName(String userName) {
+		return getIdByName(userName) > 0L;
 	}
 }

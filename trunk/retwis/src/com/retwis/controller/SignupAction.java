@@ -40,7 +40,7 @@ public class SignupAction extends HttpServlet {
 		String signup_error = null;
 		if (!username.matches("^\\w+")) {
 			signup_error = "Username must only contain letters, numbers and underscores.";
-		} else if (userService.get(null) != null) {
+		} else if (userService.checkExistByName(username)) {
 			signup_error = "That username is taken.";
 		} else if (username.length() < 4) {
 			signup_error = "Username must be at least 4 characters";
@@ -63,7 +63,7 @@ public class SignupAction extends HttpServlet {
 		user.setPass(password);
 
 		userService.save(user);
-		
+
 		request.getSession().setAttribute("user", user);
 
 		response.sendRedirect("/");
