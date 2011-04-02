@@ -15,8 +15,19 @@ public class User implements Serializable {
 	private long id;
 	private String name;
 	private String pass;
+	private long date = System.currentTimeMillis();
+	
+	
 
-	private long date;
+	public User() {
+	}
+
+	public User(long id, String name, String pass, long date) {
+		this.id = id;
+		this.name = name;
+		this.pass = pass;
+		this.date = date;
+	}
 
 	public long getId() {
 		return id;

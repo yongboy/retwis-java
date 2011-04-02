@@ -30,6 +30,18 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	public void remove(String key) {
 		jedis.del(getKey(key));
 	}
+	
+	public String getStr(String key) {
+		return this.jedis.get(key);
+	}
+
+	public void saveStr(String key, String value) {
+		this.jedis.set(key, value);
+	}
+
+	public void updateStr(String key, String value) {
+		saveStr(key, value);
+	}
 
 	public List<String> find(int pageNum, int pageSize) {
 		return null;
