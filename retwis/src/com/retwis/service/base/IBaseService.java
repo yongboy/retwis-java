@@ -7,6 +7,11 @@ public interface IBaseService<V extends Serializable> {
 
 	V get(String key);
 	
+	String getStr(String key);
+	
+	void saveStr(String key, String value);	
+	void updateStr(String key, String value);
+	
 	void save(String key, V value);	
 	void update(String key, V value);
 	

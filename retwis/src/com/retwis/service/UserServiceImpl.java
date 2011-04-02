@@ -8,6 +8,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 	public void save(User user) {
 		super.save(getId(user.getId()), user);
+
+		super.saveStr(String.format(USER_NAME_FORMAT, user.getName()),
+				Long.toString(user.getId()));
 	}
 
 	public User get(long id) {
@@ -19,6 +22,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	}
 
 	private static final String USER_ID_FORMAT = "user:id:%s";
+	private static final String USER_NAME_FORMAT = "user:name:%s";
 
 	public static void main(String[] args) {
 		long id = 1000L;
@@ -40,5 +44,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		} else {
 			System.out.println(u + " with date : " + u.getSaveDate());
 		}
+	}
+
+	public long getNextUid() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public long getIdByName(String userName) {
+		String id = super.getStr(userName);
+
+		if (id == null || id.endsWith(""))
+			return 0L;
+
+		return Long.valueOf(id);
 	}
 }
