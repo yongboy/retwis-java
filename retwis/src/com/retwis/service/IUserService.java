@@ -1,9 +1,8 @@
 package com.retwis.service;
 
 import com.retwis.User;
-import com.retwis.service.base.IBaseService;
 
-public interface IUserService extends IBaseService<User> {
+public interface IUserService {
 
 	long getNextUid();
 
@@ -12,4 +11,6 @@ public interface IUserService extends IBaseService<User> {
 	User get(long id);
 	
 	long getIdByName(String userName);
+	
+	boolean checkExistByName(String userName);
 }
