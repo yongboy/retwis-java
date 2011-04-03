@@ -1,19 +1,19 @@
 <#include "header.html" />
 <div class="span-16" id="maincol">
   <div id="updateform" class="box">
-    <% if @posting_error %>
+    <#if posting_error??>
       <div class="error">
-        <%= @posting_error %>
+        ${posting_error}
       </div>
-    <% end %>
-    <form action="/post" method="post">
-      <%= @logged_in_user.username %>, what's on your mind? <br />
+    </#if>
+    <form action="${base}/post" method="post">
+      ${user.name}, what's on your mind? <br />
       <textarea name="content" rows="3" columns="70"></textarea><br />
       <input type="submit" value="Update">
     </form>
   </div>
-  <%= erb :_posts %>
-  
+  <#include "posts.html" />
+    
 </div>
 
 <div class="span-7 last" id="rightcol">

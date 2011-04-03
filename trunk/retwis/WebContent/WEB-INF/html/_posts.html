@@ -1,6 +1,6 @@
 
 <div id="posts" class="span-15">
-  <% @posts.each do |post| %>
+  <#list posts as p>
     <div class="post">
       <strong><%= link_to_user(post.user) %></strong>
       <%= display_post(post) %>
@@ -8,8 +8,8 @@
         <%= time_ago_in_words(post.created_at) %>
       </div>
     </div>
-  <% end %>
-  <% if @posts.empty? %>
+  </#list>
+  <#if posts?size == 0 %>
     No posts.
-  <% end %>
+  </#if>
 </div>
