@@ -58,6 +58,10 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	public Long incr(String key) {
 		return this.jedis.incr(key);
 	}
+	
+	public void addHeadList(String key, String oneValue){
+		this.jedis.lpush(key, oneValue);
+	}
 
 	@SuppressWarnings("unchecked")
 	private V byte2Object(byte[] bytes) {
