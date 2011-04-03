@@ -1,5 +1,7 @@
 package com.retwis.service;
 
+import java.util.List;
+
 import com.retwis.Status;
 
 public interface IStatusService {
@@ -8,4 +10,6 @@ public interface IStatusService {
 	Status get(long id);
 
 	void init();
+	
+	List<Status> page(int page);
 }

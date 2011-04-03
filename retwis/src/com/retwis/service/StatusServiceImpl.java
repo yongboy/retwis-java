@@ -1,5 +1,7 @@
 package com.retwis.service;
 
+import java.util.List;
+
 import com.retwis.Status;
 import com.retwis.service.base.BaseServiceImpl;
 
@@ -39,6 +41,18 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		}
 	}
 
+	public List<Status> page(int page) {
+		if(page < 1)page = 1;
+		
+		int startIndex = (page-1) * 10;
+		int endIndex = page * 10;
+		
+		return null;
+	}
+
 	private static final String GLOBAL_STATUS_ID = "global:nextStatusId";
 	private static final String STATUS_ID_FORMAT = "status:id:%s";
+	//user:id:#{id}:posts"
+	//user:id:#{id}:timeline
+	//user:id:#{id}:mentions
 }

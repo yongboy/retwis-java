@@ -14,7 +14,7 @@ public class Status implements Serializable {
 
 	private long id;
 	private String value;
-	private long date = System.currentTimeMillis();
+	private long time = System.currentTimeMillis();
 	private long uid;
 	private String ip;
 
@@ -34,12 +34,12 @@ public class Status implements Serializable {
 		this.value = value;
 	}
 
-	public long getDate() {
-		return date;
+	public long getTime() {
+		return time;
 	}
 
-	public void setDate(long date) {
-		this.date = date;
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	public long getUid() {
@@ -59,6 +59,40 @@ public class Status implements Serializable {
 	}
 
 	public Date getSaveDate() {
-		return new Date(date);
+		return new Date(time);
+	}
+
+	public String getTimeAgoInWords() {
+		long leftTime = System.currentTimeMillis() - time;
+
+		if (leftTime >= 0 && leftTime < 10) {
+			return "just now";
+		} else if (leftTime >= 10 && leftTime <= 60) {
+			return "less than a minute ago";
+		}
+
+		long leftMin = leftTime / 60L;
+
+		if (leftMin >= 0 && leftMin <= 1) {
+			return "a minute ago";
+		} else if (leftMin >= 2 && leftMin <= 45) {
+			return leftMin + " minutes ago";
+		} else if (leftMin >= 46 && leftMin <= 89) {
+			return "about an hour ago";
+		} else if (leftMin >= 90 && leftMin <= 1439) {
+			return (leftMin / 60L) + " hours ago";
+		} else if (leftMin >= 1440 && leftMin <= 2879) {
+			return "about a day ago";
+		} else if (leftMin >= 2880 && leftMin <= 43199) {
+			return (leftMin / 1440L) + " days ago";
+		} else if (leftMin >= 43200 && leftMin <= 86399) {
+			return "about a month ago";
+		} else if (leftMin >= 86400 && leftMin <= 525599) {
+			return (leftMin / 43200L) + " months ago";
+		} else if (leftMin >= 525600 && leftMin <= 1051199) {
+			return "about a year ago";
+		} else {
+			return "over " + (leftMin / 525600L) + " years ago";
+		}
 	}
 }
