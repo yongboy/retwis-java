@@ -55,6 +55,10 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 		return key.getBytes();
 	}
 
+	public Long incr(String key) {
+		return this.jedis.incr(key);
+	}
+
 	@SuppressWarnings("unchecked")
 	private V byte2Object(byte[] bytes) {
 		try {

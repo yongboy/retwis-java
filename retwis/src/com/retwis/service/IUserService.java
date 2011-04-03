@@ -13,4 +13,6 @@ public interface IUserService {
 	long getIdByName(String userName);
 	
 	boolean checkExistByName(String userName);
+
+	User checkLogin(String username, String password);
 }
