@@ -4,7 +4,11 @@ import com.retwis.User;
 
 public interface IUserService {
 
-	long getNextUid();
+//	long getNextUid();
+//	
+//	long getCurrUid();
+//	
+//	void setCurrUid(long userId);
 
 	void save(User user);
 
@@ -15,4 +19,6 @@ public interface IUserService {
 	boolean checkExistByName(String userName);
 
 	User checkLogin(String username, String password);
+	
+	void init();
 }

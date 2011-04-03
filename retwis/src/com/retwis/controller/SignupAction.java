@@ -53,7 +53,6 @@ public class SignupAction extends HttpServlet {
 		}
 
 		User user = new User();
-		user.setId(userService.getNextUid());
 		user.setName(username);
 		user.setPass(password);
 

@@ -27,9 +27,8 @@ public class LoginAction extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("base", request.getContextPath());
-		
-		request.getRequestDispatcher("/WEB-INF/html/login.html").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/html/login.html").forward(
+				request, response);
 	}
 
 	protected void doPost(HttpServletRequest request,
@@ -41,13 +40,14 @@ public class LoginAction extends HttpServlet {
 		if (username == null || password == null
 				|| (user = userService.checkLogin(username, password)) == null
 				|| !MD5.checkMD5(password, user.getPass())) {
+			request.setAttribute("username", username);
 			request.setAttribute("login_error",
 					"Incorrect username or password");
 
 			doGet(request, response);
 		} else {
 			request.getSession().setAttribute("user", user);
-			response.sendRedirect("/");
+			response.sendRedirect(request.getContextPath() + "/");
 		}
 	}
 }
