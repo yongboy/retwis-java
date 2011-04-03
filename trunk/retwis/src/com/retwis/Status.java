@@ -14,7 +14,9 @@ public class Status implements Serializable {
 
 	private long id;
 	private String value;
-	private long date;
+	private long date = System.currentTimeMillis();
+	private long uid;
+	private String ip;
 
 	public long getId() {
 		return id;
@@ -38,6 +40,22 @@ public class Status implements Serializable {
 
 	public void setDate(long date) {
 		this.date = date;
+	}
+
+	public long getUid() {
+		return uid;
+	}
+
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public Date getSaveDate() {
