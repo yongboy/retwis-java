@@ -8,8 +8,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		IUserService {
 
 	public void save(User user) {
-		user.setId(super.incr(GLOBAL_USER_ID));
-		user.setPass(MD5.encode(user.getPass()));		
+		user.setId(getNextUid());
+		user.setPass(MD5.encode(user.getPass()));
 		super.save(getId(user.getId()), user);
 
 		super.saveStr(String.format(USER_NAME_FORMAT, user.getName()),
@@ -23,8 +23,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	private String getId(long id) {
 		return String.format(USER_ID_FORMAT, id);
 	}
-	
-	private String getName(String name){
+
+	private String getName(String name) {
 		return String.format(USER_NAME_FORMAT, name);
 	}
 
@@ -53,8 +53,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		}
 	}
 
-	public long getNextUid() {
-		return 0;
+	private long getNextUid() {
+		return super.incr(GLOBAL_USER_ID);
+	}
+
+	public void init() {
+		String currUserId = getStr(GLOBAL_USER_ID);
+		long currUid = 0L;
+		if (currUserId == null || currUserId.length() == 0)
+			currUid = -1L;
+
+		if(currUid < 1000L){
+			saveStr(GLOBAL_USER_ID, Long.toString(currUid));
+		}
 	}
 
 	public long getIdByName(String userName) {
@@ -72,10 +83,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 	public User checkLogin(String username, String password) {
 		long userId = getIdByName(username);
-		
-		if(userId < 1L)
+
+		if (userId < 1L)
 			return null;
-		
+
 		return this.get(userId);
 	}
 }

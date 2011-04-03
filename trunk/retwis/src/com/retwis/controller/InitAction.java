@@ -5,12 +5,18 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
-@WebServlet(urlPatterns = "/init", loadOnStartup = 2)
+import com.retwis.service.IUserService;
+import com.retwis.service.UserServiceImpl;
+
+@WebServlet(urlPatterns = "/init", loadOnStartup = 1)
 public class InitAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public void init(ServletConfig config) throws ServletException {
 		config.getServletContext().setAttribute("base",
 				config.getServletContext().getContextPath());
+
+		IUserService userService = new UserServiceImpl();
+		userService.init();
 	}
 }
