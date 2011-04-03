@@ -15,6 +15,7 @@ public interface IBaseService<V extends Serializable> {
 	void update(String key, V value);
 	void removeStr(String key);
 	
+	Long incr(String key);
 	
 	List<String> find(int pageNum, int pageSize);
 }
