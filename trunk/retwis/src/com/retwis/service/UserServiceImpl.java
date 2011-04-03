@@ -31,6 +31,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	private static final String GLOBAL_USER_ID = "global:nextUserId";
 	private static final String USER_ID_FORMAT = "user:id:%s";
 	private static final String USER_NAME_FORMAT = "user:name:%s";
+	//user:id:#{id}:followees
+	//user:id:#{id}:followers
 
 	public static void main(String[] args) {
 		User user = new User();
