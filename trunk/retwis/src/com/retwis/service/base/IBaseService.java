@@ -3,6 +3,13 @@ package com.retwis.service.base;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ * @param <V>
+ */
 public interface IBaseService<V extends Serializable> {
 	
 	String getStr(String key);	

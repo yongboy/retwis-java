@@ -8,6 +8,12 @@ import com.retwis.Status;
 import com.retwis.service.base.BaseServiceImpl;
 import com.retwis.util.RegUtils;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		IStatusService {
 
@@ -15,24 +21,6 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 	public StatusServiceImpl() {
 		userService = new UserServiceImpl();
-	}
-
-	public static void main(String[] args) {
-		String value = "you know it @xiaoi and @dsms @ ";
-
-		List<String> userNames = RegUtils.getValuesListByOne(value, "@(\\w+)",
-				1);
-
-		if (!userNames.isEmpty()) {
-			System.out.println("target user name : ");
-			for (String name : userNames) {
-				System.out.println(":" + name);
-			}
-		}
-	}
-
-	public void test() {
-
 	}
 
 	public void save(long userId, String value, String userIp) {
@@ -80,29 +68,8 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		super.addHeadList(GLOBAL_TIMELINE_FORMAT, Long.toString(status.getId()));
 	}
 
-	@Override
 	public Status load(long id) {
 		return super.get(getFormatId(id));
-	}
-
-	private String getFormatId(long id) {
-		return String.format(STATUS_ID_FORMAT, id);
-	}
-
-	private long getNextId() {
-		return super.incr(GLOBAL_STATUS_ID);
-	}
-
-	private String getTimelineId(long userId) {
-		return String.format(TIMELINE_FORMAT, userId);
-	}
-
-	private String getPostsId(long userId) {
-		return String.format(POSTS_FORMAT, userId);
-	}
-
-	private String getMentionsId(long userId) {
-		return String.format(MENTIONS_FORMAT, userId);
 	}
 
 	public void init() {
@@ -139,6 +106,26 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 			return null;
 
 		return mentions(userId, page);
+	}
+
+	private String getFormatId(long id) {
+		return String.format(STATUS_ID_FORMAT, id);
+	}
+
+	private long getNextId() {
+		return super.incr(GLOBAL_STATUS_ID);
+	}
+
+	private String getTimelineId(long userId) {
+		return String.format(TIMELINE_FORMAT, userId);
+	}
+
+	private String getPostsId(long userId) {
+		return String.format(POSTS_FORMAT, userId);
+	}
+
+	private String getMentionsId(long userId) {
+		return String.format(MENTIONS_FORMAT, userId);
 	}
 
 	private List<Status> timeline(String targetId, int page) {

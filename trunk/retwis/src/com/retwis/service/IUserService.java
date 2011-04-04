@@ -5,13 +5,13 @@ import java.util.Set;
 
 import com.retwis.User;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 public interface IUserService {
-
-//	long getNextUid();
-//	
-//	long getCurrUid();
-//	
-//	void setCurrUid(long userId);
 
 	void save(User user);
 
@@ -24,8 +24,6 @@ public interface IUserService {
 	User checkLogin(String username, String password);
 	
 	void addFollowee(long currUserId, long followeeUserId);
-//	
-//	void addFollowees(String ... userId);
 	
 	Set<String> getFollowers(long userId);
 	
