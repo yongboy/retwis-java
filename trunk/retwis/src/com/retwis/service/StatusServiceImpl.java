@@ -71,7 +71,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 					continue;
 				}
 
-				super.addHeadList(getMentionsId(userId),
+				super.addHeadList(getMentionsId(targetUserId),
 						Long.toString(status.getId()));
 			}
 		}
