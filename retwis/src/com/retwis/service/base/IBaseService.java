@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-4
  * @version 1.0
  * @param <V>
@@ -19,7 +19,7 @@ public interface IBaseService<V extends Serializable> {
 	
 	V get(String key);
 	void save(String key, V value);	
-	void update(String key, V value);
+	
 	void removeStr(String key);
 	
 	Long incr(String key);
