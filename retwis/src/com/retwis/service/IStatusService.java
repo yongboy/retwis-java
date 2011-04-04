@@ -13,7 +13,11 @@ public interface IStatusService {
 	
 	List<Status> timeline(int page);
 
-	List<Status> timeline(long id, int page);
+	List<Status> timeline(long userId, int page);
+
+	List<Status> mentions(long userId, int page);
+
+	List<Status> mentions(String userName, int page);
 	
 //	List<Status> timeline(long userId, int page);
 }

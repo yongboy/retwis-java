@@ -1,6 +1,8 @@
 package com.retwis.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.retwis.User;
@@ -17,9 +19,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 		super.saveStr(String.format(USER_NAME_FORMAT, user.getName()),
 				Long.toString(user.getId()));
+
+		super.addHeadList(GLOBAL_USER_FORMAT, Long.toString(user.getId()));
 	}
 
-	public User get(long id) {
+	public User load(long id) {
 		return super.get(getId(id));
 	}
 
@@ -36,6 +40,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	private static final String USER_NAME_FORMAT = "user:name:%s";
 	private static final String FOLLOWERS_FORMAT = "user:id:%s:followers";
 	private static final String FOLLOWEES_FORMAT = "user:id:%s:followees";
+	private static final String GLOBAL_USER_FORMAT = "users";
 
 	public static void main(String[] args) {
 		User user = new User();
@@ -69,7 +74,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 			currUid = -1L;
 
 		if (currUid < 1000L) {
-			saveStr(GLOBAL_USER_ID, Long.toString(currUid));
+			saveStr(GLOBAL_USER_ID, Long.toString(1000L));
 		}
 	}
 
@@ -92,7 +97,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		if (userId < 1L)
 			return null;
 
-		return this.get(userId);
+		return this.load(userId);
 	}
 
 	public void addFollowee(long targetUserId, long followeeUserId) {
@@ -124,7 +129,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 		Set<String> nameSet = new HashSet<String>(idSet.size());
 		for (String uid : idSet) {
-			User user = get(Long.valueOf(uid));
+			User user = load(Long.valueOf(uid));
 
 			if (user == null)
 				continue;
@@ -133,5 +138,42 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		}
 
 		return nameSet;
+	}
+
+	public List<String> getNewUsers(int page) {
+		int start = (page - 1) * 10;
+		int end = page * 10;
+		List<String> idList = super.jedis
+				.lrange(GLOBAL_USER_FORMAT, start, end);
+
+		if (idList.isEmpty())
+			return idList;
+
+		List<String> nameSet = new ArrayList<String>(idList.size());
+		for (String uid : idList) {
+			User user = load(Long.valueOf(uid));
+
+			if (user == null)
+				continue;
+
+			nameSet.add(user.getName());
+		}
+
+		return nameSet;
+	}
+
+	public User loadByName(String userName) {
+		long userId = getIdByName(userName);
+
+		if (userId < 1L)
+			return null;
+
+		return load(userId);
+	}
+
+	public boolean checkFlollowing(long currUserId, long targeUserId) {
+		return super.jedis.sismember(
+				String.format(FOLLOWEES_FORMAT, currUserId),
+				Long.toString(targeUserId));
 	}
 }

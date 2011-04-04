@@ -1,5 +1,6 @@
 package com.retwis.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.retwis.User;
@@ -14,7 +15,7 @@ public interface IUserService {
 
 	void save(User user);
 
-	User get(long id);
+	User load(long id);
 	
 	long getIdByName(String userName);
 	
@@ -31,4 +32,10 @@ public interface IUserService {
 	void init();
 
 	Set<String> getFollowees(long userId);
+	
+	List<String> getNewUsers(int page);
+
+	User loadByName(String userName);
+
+	boolean checkFlollowing(long currUserId, long targeUserId);
 }

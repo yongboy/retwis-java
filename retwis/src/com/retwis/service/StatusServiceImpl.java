@@ -61,7 +61,6 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 				1);
 
 		if (!userNames.isEmpty()) {
-			System.out.println("target user name : ");
 			for (String name : userNames) {
 				long targetUserId = this.userService.getIdByName(name);
 
@@ -111,7 +110,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 			currUid = -1L;
 
 		if (currUid < 1000L) {
-			saveStr(GLOBAL_STATUS_ID, Long.toString(currUid));
+			saveStr(GLOBAL_STATUS_ID, Long.toString(1000L));
 		}
 	}
 
@@ -121,6 +120,19 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 	public List<Status> timeline(long userId, int page) {
 		return timeline(getTimelineId(userId), page);
+	}
+
+	public List<Status> mentions(long userId, int page) {
+		return timeline(getMentionsId(userId), page);
+	}
+
+	public List<Status> mentions(String userName, int page) {
+		long userId = userService.getIdByName(userName);
+
+		if (userId < 1L)
+			return null;
+
+		return mentions(userId, page);
 	}
 
 	private List<Status> timeline(String targetId, int page) {
@@ -143,7 +155,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 			if (status == null)
 				continue;
 
-			status.setUser(userService.get(status.getUid()));
+			status.setUser(userService.load(status.getUid()));
 
 			statusList.add(status);
 		}

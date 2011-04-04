@@ -65,6 +65,9 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 
 	@SuppressWarnings("unchecked")
 	private V byte2Object(byte[] bytes) {
+		if(bytes == null || bytes.length == 0)
+			return null;
+		
 		try {
 			ObjectInputStream inputStream;
 			inputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
@@ -81,6 +84,9 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	}
 
 	private byte[] object2Bytes(V value) {
+		if(value == null)
+			return null;
+		
 		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 		ObjectOutputStream outputStream;
 		try {
