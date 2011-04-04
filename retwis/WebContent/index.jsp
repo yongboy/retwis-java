@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <%
 	Object obj = session.getAttribute("user");
 
-	if(obj == null){
-		response.sendRedirect("login");
-		return;
+	String url = "login";
+	if(obj != null){
+		url = "home";
 	}
-	request.getRequestDispatcher("home").forward(request, response);
-%> 
+	
+	request.getRequestDispatcher(url).forward(request, response);
+%>
