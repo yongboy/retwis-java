@@ -18,6 +18,8 @@ public interface IStatusService {
 	List<Status> mentions(long userId, int page);
 
 	List<Status> mentions(String userName, int page);
+
+	List<Status> posts(long userId, int page);
 	
 //	List<Status> timeline(long userId, int page);
 }

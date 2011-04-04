@@ -38,4 +38,8 @@ public interface IUserService {
 	User loadByName(String userName);
 
 	boolean checkFlollowing(long currUserId, long targeUserId);
+
+	void addFollowee(String currUserName, String targetUserName);
+
+	void removeFollowee(String currUserName, String targetUserName);
 }

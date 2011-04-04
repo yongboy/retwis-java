@@ -20,8 +20,8 @@ import com.retwis.service.UserServiceImpl;
  * @date 2011-4-4
  * @version 1.0
  */
-@WebServlet("/mentions")
-public class MentionAction extends HttpServlet {
+@WebServlet("/posts")
+public class UserPostAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private IStatusService statusService = new StatusServiceImpl();
@@ -29,24 +29,23 @@ public class MentionAction extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		String userName = request.getParameter("user");
-
-		request.setAttribute("posts", statusService.mentions(userName, 1));
-		request.setAttribute("userName", userName);
-
-		User currentUser = (User) request.getSession().getAttribute("user");
+		String userName = request.getParameter("name");
 		User targetUser = userService.loadByName(userName);
 
+		request.setAttribute("targetUser", targetUser);
+		request.setAttribute("posts", statusService.posts(targetUser.getId(), 1));
+		request.setAttribute("followers", userService.getFollowers(targetUser.getId()));
+		request.setAttribute("followees", userService.getFollowees(targetUser.getId()));
+		
+		User currentUser = (User) request.getSession().getAttribute("user");
 		if (!targetUser.equals(currentUser)) {
-			request.setAttribute("targetUser", targetUser);
 			request.setAttribute(
 					"following",
 					userService.checkFlollowing(currentUser.getId(),
 							targetUser.getId()));
 		}
 
-		request.getRequestDispatcher("/WEB-INF/html/mentions.html").forward(
+		request.getRequestDispatcher("/WEB-INF/html/profile.html").forward(
 				request, response);
 	}
 }
