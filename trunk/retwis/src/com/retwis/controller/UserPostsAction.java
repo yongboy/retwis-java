@@ -21,7 +21,7 @@ import com.retwis.service.UserServiceImpl;
  * @version 1.0
  */
 @WebServlet("/posts")
-public class UserPostAction extends HttpServlet {
+public class UserPostsAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private IStatusService statusService = new StatusServiceImpl();
