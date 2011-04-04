@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.retwis.Status;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 public interface IStatusService {
 	void save(long userId, String value, String userIp);
 
@@ -20,6 +26,4 @@ public interface IStatusService {
 	List<Status> mentions(String userName, int page);
 
 	List<Status> posts(long userId, int page);
-	
-//	List<Status> timeline(long userId, int page);
 }

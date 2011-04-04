@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import com.retwis.service.IUserService;
 import com.retwis.service.UserServiceImpl;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 @WebServlet(urlPatterns = "/init", loadOnStartup = 1)
 public class InitAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;

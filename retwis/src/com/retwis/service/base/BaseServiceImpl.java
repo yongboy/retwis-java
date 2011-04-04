@@ -10,6 +10,13 @@ import java.util.List;
 
 import redis.clients.jedis.Jedis;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ * @param <V>
+ */
 public abstract class BaseServiceImpl<V extends Serializable> implements
 		IBaseService<V> {
 	private static final String REDIS_HOST = "192.168.0.199";

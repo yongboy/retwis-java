@@ -9,6 +9,12 @@ import com.retwis.User;
 import com.retwis.service.base.BaseServiceImpl;
 import com.retwis.util.MD5;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 public class UserServiceImpl extends BaseServiceImpl<User> implements
 		IUserService {
 
@@ -33,34 +39,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 	private String getName(String name) {
 		return String.format(USER_NAME_FORMAT, name);
-	}
-
-	private static final String GLOBAL_USER_ID = "global:nextUserId";
-	private static final String USER_ID_FORMAT = "user:id:%s";
-	private static final String USER_NAME_FORMAT = "user:name:%s";
-	private static final String FOLLOWERS_FORMAT = "user:id:%s:followers";
-	private static final String FOLLOWEES_FORMAT = "user:id:%s:followees";
-	private static final String GLOBAL_USER_FORMAT = "users";
-
-	public static void main(String[] args) {
-		User user = new User();
-		user.setName("xiaoi");
-		user.setPass("ipass");
-		user.setDate(System.currentTimeMillis());
-
-		UserServiceImpl service = new UserServiceImpl();
-		service.save(user);
-
-		System.out.println("save done ...");
-
-		User u = service.checkLogin(user.getName(), user.getPass());
-
-		if (u == null) {
-			System.out.println("get user is null !");
-		} else {
-			System.out.println(u + " with date : " + u.getSaveDate());
-			System.out.println("password : " + u.getPass());
-		}
 	}
 
 	private long getNextUid() {
@@ -207,4 +185,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		super.jedis.srem(String.format(FOLLOWERS_FORMAT, targetUserId),
 				Long.toString(currUserId));
 	}
+	
+	private static final String GLOBAL_USER_ID = "global:nextUserId";
+	private static final String USER_ID_FORMAT = "user:id:%s";
+	private static final String USER_NAME_FORMAT = "user:name:%s";
+	private static final String FOLLOWERS_FORMAT = "user:id:%s:followers";
+	private static final String FOLLOWEES_FORMAT = "user:id:%s:followees";
+	private static final String GLOBAL_USER_FORMAT = "users";
 }

@@ -13,6 +13,12 @@ import com.retwis.service.IUserService;
 import com.retwis.service.StatusServiceImpl;
 import com.retwis.service.UserServiceImpl;
 
+/**
+ * 
+ * @author y.nie
+ * @date 2011-4-4
+ * @version 1.0
+ */
 @WebServlet("/timeline")
 public class TimelineActioin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
