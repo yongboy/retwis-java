@@ -104,10 +104,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		if (targetUserId == followeeUserId)
 			return;
 
-		super.addHeadList(String.format(FOLLOWEES_FORMAT, targetUserId),
+		super.jedis.sadd(String.format(FOLLOWEES_FORMAT, targetUserId),
 				Long.toString(followeeUserId));
 
-		super.addHeadList(String.format(FOLLOWERS_FORMAT, followeeUserId),
+		super.jedis.sadd(String.format(FOLLOWERS_FORMAT, followeeUserId),
 				Long.toString(targetUserId));
 	}
 
@@ -175,5 +175,36 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		return super.jedis.sismember(
 				String.format(FOLLOWEES_FORMAT, currUserId),
 				Long.toString(targeUserId));
+	}
+
+	public void addFollowee(String currUserName, String targetUserName) {
+		if (currUserName == null || targetUserName == null
+				|| currUserName.equals(targetUserName))
+			return;
+
+		long currUserId = getIdByName(currUserName);
+		long targetUserId = getIdByName(targetUserName);
+
+		if (currUserId < 1L || targetUserId < 1L)
+			return;
+
+		addFollowee(currUserId, targetUserId);
+	}
+
+	public void removeFollowee(String currUserName, String targetUserName) {
+		if (currUserName == null || targetUserName == null
+				|| currUserName.equals(targetUserName))
+			return;
+
+		long currUserId = getIdByName(currUserName);
+		long targetUserId = getIdByName(targetUserName);
+
+		if (currUserId < 1L || targetUserId < 1L)
+			return;
+
+		super.jedis.srem(String.format(FOLLOWEES_FORMAT, currUserId),
+				Long.toString(targetUserId));
+		super.jedis.srem(String.format(FOLLOWERS_FORMAT, targetUserId),
+				Long.toString(currUserId));
 	}
 }

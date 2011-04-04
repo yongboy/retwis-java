@@ -51,9 +51,12 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 		// add to follower's timeline
 		Set<String> followers = userService.getFollowers(userId);
-		for (String uid : followers) {
-			super.addHeadList(getTimelineId(Long.valueOf(uid)),
-					Long.toString(status.getId()));
+		for (String name : followers) {
+			long uid = userService.getIdByName(name);
+			if (uid < 1L)
+				continue;
+
+			super.addHeadList(getTimelineId(uid), Long.toString(status.getId()));
 		}
 
 		// add to mentions
@@ -74,7 +77,6 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		}
 
 		// add to the global timeline
-
 		super.addHeadList(GLOBAL_TIMELINE_FORMAT, Long.toString(status.getId()));
 	}
 
@@ -124,6 +126,10 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 	public List<Status> mentions(long userId, int page) {
 		return timeline(getMentionsId(userId), page);
+	}
+
+	public List<Status> posts(long userId, int page) {
+		return timeline(getPostsId(userId), page);
 	}
 
 	public List<Status> mentions(String userName, int page) {
