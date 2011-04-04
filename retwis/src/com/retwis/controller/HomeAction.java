@@ -31,6 +31,11 @@ public class HomeAction extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		User user = (User) request.getSession().getAttribute("user");
+		
+		if(user == null){
+			request.getRequestDispatcher("login").forward(request, response);
+			return;
+		}
 
 		request.setAttribute("posts", statusService.timeline(user.getId(), 1));
 		
