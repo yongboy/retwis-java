@@ -1,9 +1,9 @@
 <#include "header.html" />
 <div class="span-16" id="maincol">
   <div id="updateform" class="box">
-    <#if posting_error??>
+    <#if postingError??>
       <div class="error">
-        ${posting_error}
+        ${postingError}
       </div>
     </#if>
     <form action="${base}/post" method="post">
@@ -12,20 +12,18 @@
       <input type="submit" value="Update">
     </form>
   </div>
-  <#include "posts.html" />
+  <#include "_posts.html" />
     
 </div>
 
 <div class="span-7 last" id="rightcol">
   <div class="span-7 box">
-    <% followers = @logged_in_user.followers %>
-    <h4><%= pluralize("follower", "followers", followers.length) %></h4>
-    <%= erb :_user_list, :locals => {:users => followers } %>
+    <h4><#if followers?size = 0>0 followers<#else>follower ${followers?size}</#if></h4>
+    <#assign users = followers><#include "_user_list.html" />
   </div>
   <div class="span-7 box">
-    <% followees = @logged_in_user.followees %>
-    <h4>Following <%= followees.length %></h4>
-    <%= erb :_user_list, :locals => {:users => followees } %>
+    <h4>Following ${followees?size}</h4>
+    <#assign users = followees><#include "_user_list.html" />
   </div>
 </div>
 <#include "footer.html" />
