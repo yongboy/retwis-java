@@ -15,7 +15,7 @@ import com.retwis.util.MD5;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-2
  * @version 1.0
  */

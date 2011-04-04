@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 
  * @author yongboy
- * @date 2011-4-2
+ * @date 2011-4-3
  * @version 1.0
  */
 public class User implements Serializable {
@@ -64,7 +64,6 @@ public class User implements Serializable {
 	}
 
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
 

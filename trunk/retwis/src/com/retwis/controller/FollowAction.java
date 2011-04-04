@@ -13,7 +13,7 @@ import com.retwis.service.UserServiceImpl;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-4
  * @version 1.0
  */

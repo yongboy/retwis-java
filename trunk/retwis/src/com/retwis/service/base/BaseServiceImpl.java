@@ -12,7 +12,7 @@ import redis.clients.jedis.Jedis;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-4
  * @version 1.0
  * @param <V>
@@ -28,10 +28,6 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 
 	public void save(String key, V value) {
 		jedis.set(getKey(key), object2Bytes(value));
-	}
-
-	public void update(String key, V value) {
-		this.save(key, value);
 	}
 
 	public void remove(String key) {

@@ -11,7 +11,7 @@ import com.retwis.util.MD5;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-4
  * @version 1.0
  */
@@ -56,7 +56,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		}
 	}
 
-	public long getIdByName(String userName) {
+	public long loadIdByName(String userName) {
 		String id = super.getStr(getName(userName));
 
 		if (id == null || id.equals(""))
@@ -66,11 +66,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	}
 
 	public boolean checkExistByName(String userName) {
-		return getIdByName(userName) > 0L;
+		return loadIdByName(userName) > 0L;
 	}
 
 	public User checkLogin(String username, String password) {
-		long userId = getIdByName(username);
+		long userId = loadIdByName(username);
 
 		if (userId < 1L)
 			return null;
@@ -141,7 +141,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	}
 
 	public User loadByName(String userName) {
-		long userId = getIdByName(userName);
+		long userId = loadIdByName(userName);
 
 		if (userId < 1L)
 			return null;
@@ -160,8 +160,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 				|| currUserName.equals(targetUserName))
 			return;
 
-		long currUserId = getIdByName(currUserName);
-		long targetUserId = getIdByName(targetUserName);
+		long currUserId = loadIdByName(currUserName);
+		long targetUserId = loadIdByName(targetUserName);
 
 		if (currUserId < 1L || targetUserId < 1L)
 			return;
@@ -174,8 +174,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 				|| currUserName.equals(targetUserName))
 			return;
 
-		long currUserId = getIdByName(currUserName);
-		long targetUserId = getIdByName(targetUserName);
+		long currUserId = loadIdByName(currUserName);
+		long targetUserId = loadIdByName(targetUserName);
 
 		if (currUserId < 1L || targetUserId < 1L)
 			return;

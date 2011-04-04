@@ -10,7 +10,7 @@ import com.retwis.util.RegUtils;
 
 /**
  * 
- * @author y.nie
+ * @author yongboy
  * @date 2011-4-4
  * @version 1.0
  */
@@ -40,7 +40,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		// add to follower's timeline
 		Set<String> followers = userService.getFollowers(userId);
 		for (String name : followers) {
-			long uid = userService.getIdByName(name);
+			long uid = userService.loadIdByName(name);
 			if (uid < 1L)
 				continue;
 
@@ -53,7 +53,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 		if (!userNames.isEmpty()) {
 			for (String name : userNames) {
-				long targetUserId = this.userService.getIdByName(name);
+				long targetUserId = this.userService.loadIdByName(name);
 
 				if (targetUserId < 1L) {
 					continue;
@@ -100,7 +100,7 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 	}
 
 	public List<Status> mentions(String userName, int page) {
-		long userId = userService.getIdByName(userName);
+		long userId = userService.loadIdByName(userName);
 
 		if (userId < 1L)
 			return null;
