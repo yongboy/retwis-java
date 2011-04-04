@@ -1,28 +1,28 @@
 <#include "header.html" />
 
 <div class="span-16" id="maincol">
-  <h2><%= @user.username %></h2>
-  <% if @logged_in_user != @user %>
-    <div class="box">  
-      <% if @logged_in_user.following?(@user) %>
-        <a href="/<%= @logged_in_user.username %>/stopfollow/<%= @user.username %>">Stop following</a>
-      <% else %>
-        <a href="/<%= @logged_in_user.username %>/follow/<%= @user.username %>">Follow</a>
-      <% end %>
-      | <a href="/<%= @user.username %>/mentions">See mentions</a>
+  <h2>${targetUser.name}</h2>
+  <#if targetUser.id != user.id>
+    <div class="box">
+      <#if following>
+        <a href="${base}/${user.name}/unfollow/${targetUser.name}">Stop following</a>
+      <#else>
+        <a href="${base}/${user.name}/follow/${targetUser.name}">Follow</a>
+      </#if>
+      | <a href="${base}/${targetUser.name}/mentions">See mentions</a>
     </div>
-  <% end %>
+  </#if>
   
-  <%= erb :_posts %>
+  <#include "_posts.html">
 </div>
 <div class="span-7 last" id="rightcol">
   <div class="span-7 box">
-    <h4><%= pluralize("follower", "followers", @followers.length) %></h4>
-    <%= erb :_user_list, :locals => {:users => @followers } %>
+    <h4><#if followers?size = 0>0 followers<#else>follower ${followers?size}</#if></h4>
+    <#assign users = followers><#include "_user_list.html" />
   </div>
   <div class="span-7 box">
-    <h4>Following <%= @followees.length %></h4>
-    <%= erb :_user_list, :locals => {:users => @followees } %>
+    <h4>Following ${followees?size}</h4>
+    <#assign users = followees><#include "_user_list.html" />
   </div>
 </div>
 
