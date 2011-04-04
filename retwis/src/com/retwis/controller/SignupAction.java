@@ -32,21 +32,21 @@ public class SignupAction extends HttpServlet {
 		String password_confirmation = request
 				.getParameter("password_confirmation");
 
-		String signup_error = null;
+		String signupError = null;
 		if (!username.matches("^\\w+")) {
-			signup_error = "Username must only contain letters, numbers and underscores.";
+			signupError = "Username must only contain letters, numbers and underscores.";
 		} else if (userService.checkExistByName(username)) {
-			signup_error = "That username is taken.";
+			signupError = "That username is taken.";
 		} else if (username.length() < 4) {
-			signup_error = "Username must be at least 4 characters";
+			signupError = "Username must be at least 4 characters";
 		} else if (password.length() < 6) {
-			signup_error = "Password must be at least 6 characters!";
+			signupError = "Password must be at least 6 characters!";
 		} else if (!password.equals(password_confirmation)) {
-			signup_error = "Passwords do not match!";
+			signupError = "Passwords do not match!";
 		}
 
-		if (signup_error != null) {
-			request.setAttribute("signup_error", signup_error);
+		if (signupError != null) {
+			request.setAttribute("signupError", signupError);
 
 			request.getRequestDispatcher("login").forward(request, response);
 			return;

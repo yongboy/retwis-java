@@ -13,7 +13,7 @@ import redis.clients.jedis.Jedis;
 public abstract class BaseServiceImpl<V extends Serializable> implements
 		IBaseService<V> {
 	private static final String REDIS_HOST = "192.168.0.199";
-	Jedis jedis = new Jedis(REDIS_HOST);
+	public Jedis jedis = new Jedis(REDIS_HOST);
 
 	public V get(String key) {
 		return byte2Object(jedis.get(getKey(key)));

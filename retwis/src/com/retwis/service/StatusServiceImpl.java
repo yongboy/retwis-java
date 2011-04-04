@@ -1,24 +1,86 @@
 package com.retwis.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.retwis.Status;
 import com.retwis.service.base.BaseServiceImpl;
+import com.retwis.util.RegUtils;
 
 public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		IStatusService {
+
+	private IUserService userService;
+
+	public StatusServiceImpl() {
+		userService = new UserServiceImpl();
+	}
+
+	public static void main(String[] args) {
+		String value = "you know it @xiaoi and @dsms @ ";
+
+		List<String> userNames = RegUtils.getValuesListByOne(value, "@(\\w+)",
+				1);
+
+		if (!userNames.isEmpty()) {
+			System.out.println("target user name : ");
+			for (String name : userNames) {
+				System.out.println(":" + name);
+			}
+		}
+	}
+
+	public void test() {
+
+	}
 
 	public void save(long userId, String value, String userIp) {
 		Status status = new Status();
 		status.setId(getNextId());
 		status.setUid(userId);
 		status.setIp(userIp);
-		status.setValue(value);
+		status.setContent(value);
 
 		super.save(getFormatId(status.getId()), status);
+
+		// add to self's timeline
+		super.addHeadList(getTimelineId(userId), Long.toString(status.getId()));
+		// add to self's posts
+		super.addHeadList(getPostsId(userId), Long.toString(status.getId()));
+
+		// add to follower's timeline
+		Set<String> followers = userService.getFollowers(userId);
+		for (String uid : followers) {
+			super.addHeadList(getTimelineId(Long.valueOf(uid)),
+					Long.toString(status.getId()));
+		}
+
+		// add to mentions
+		List<String> userNames = RegUtils.getValuesListByOne(value, "@(\\w+)",
+				1);
+
+		if (!userNames.isEmpty()) {
+			System.out.println("target user name : ");
+			for (String name : userNames) {
+				long targetUserId = this.userService.getIdByName(name);
+
+				if (targetUserId < 1L) {
+					continue;
+				}
+
+				super.addHeadList(getMentionsId(userId),
+						Long.toString(status.getId()));
+			}
+		}
+
+		// add to the global timeline
+
+		super.addHeadList(GLOBAL_TIMELINE_FORMAT, Long.toString(status.getId()));
 	}
 
-	public Status get(long id) {
+	@Override
+	public Status load(long id) {
 		return super.get(getFormatId(id));
 	}
 
@@ -28,6 +90,18 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 
 	private long getNextId() {
 		return super.incr(GLOBAL_STATUS_ID);
+	}
+
+	private String getTimelineId(long userId) {
+		return String.format(TIMELINE_FORMAT, userId);
+	}
+
+	private String getPostsId(long userId) {
+		return String.format(POSTS_FORMAT, userId);
+	}
+
+	private String getMentionsId(long userId) {
+		return String.format(MENTIONS_FORMAT, userId);
 	}
 
 	public void init() {
@@ -41,18 +115,46 @@ public class StatusServiceImpl extends BaseServiceImpl<Status> implements
 		}
 	}
 
-	public List<Status> page(int page) {
-		if(page < 1)page = 1;
-		
-		int startIndex = (page-1) * 10;
+	public List<Status> timeline(int page) {
+		return timeline(GLOBAL_TIMELINE_FORMAT, page);
+	}
+
+	public List<Status> timeline(long userId, int page) {
+		return timeline(getTimelineId(userId), page);
+	}
+
+	private List<Status> timeline(String targetId, int page) {
+		if (page < 1)
+			page = 1;
+
+		int startIndex = (page - 1) * 10;
 		int endIndex = page * 10;
-		
-		return null;
+
+		List<String> idList = super.jedis
+				.lrange(targetId, startIndex, endIndex);
+
+		if (idList.isEmpty())
+			return new ArrayList<Status>(0);
+
+		List<Status> statusList = new ArrayList<Status>(idList.size());
+		for (String id : idList) {
+			Status status = load(Long.valueOf(id));
+
+			if (status == null)
+				continue;
+
+			status.setUser(userService.get(status.getUid()));
+
+			statusList.add(status);
+		}
+
+		return statusList;
 	}
 
 	private static final String GLOBAL_STATUS_ID = "global:nextStatusId";
-	private static final String STATUS_ID_FORMAT = "status:id:%s";
-	//user:id:#{id}:posts"
-	//user:id:#{id}:timeline
-	//user:id:#{id}:mentions
+	private static final String STATUS_ID_FORMAT = "status:id:%d";
+	private static final String POSTS_FORMAT = "user:id:%d:posts";
+	private static final String TIMELINE_FORMAT = "user:id:%d:timeline";
+	private static final String MENTIONS_FORMAT = "user:id:%d:mentions";
+	private static final String GLOBAL_TIMELINE_FORMAT = "timeline";
 }

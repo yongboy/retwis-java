@@ -1,5 +1,8 @@
 package com.retwis.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.retwis.User;
 import com.retwis.service.base.BaseServiceImpl;
 import com.retwis.util.MD5;
@@ -31,8 +34,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 	private static final String GLOBAL_USER_ID = "global:nextUserId";
 	private static final String USER_ID_FORMAT = "user:id:%s";
 	private static final String USER_NAME_FORMAT = "user:name:%s";
-	//user:id:#{id}:followees
-	//user:id:#{id}:followers
+	private static final String FOLLOWERS_FORMAT = "user:id:%s:followers";
+	private static final String FOLLOWEES_FORMAT = "user:id:%s:followees";
 
 	public static void main(String[] args) {
 		User user = new User();
@@ -65,7 +68,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 		if (currUserId == null || currUserId.length() == 0)
 			currUid = -1L;
 
-		if(currUid < 1000L){
+		if (currUid < 1000L) {
 			saveStr(GLOBAL_USER_ID, Long.toString(currUid));
 		}
 	}
@@ -90,5 +93,45 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 			return null;
 
 		return this.get(userId);
+	}
+
+	public void addFollowee(long targetUserId, long followeeUserId) {
+		if (targetUserId == followeeUserId)
+			return;
+
+		super.addHeadList(String.format(FOLLOWEES_FORMAT, targetUserId),
+				Long.toString(followeeUserId));
+
+		super.addHeadList(String.format(FOLLOWERS_FORMAT, followeeUserId),
+				Long.toString(targetUserId));
+	}
+
+	public Set<String> getFollowers(long userId) {
+		return getFollowUserNames(FOLLOWERS_FORMAT, userId);
+	}
+
+	public Set<String> getFollowees(long userId) {
+		return getFollowUserNames(FOLLOWEES_FORMAT, userId);
+	}
+
+	public Set<String> getFollowUserNames(String targetId, long userId) {
+		String followerId = String.format(targetId, userId);
+
+		Set<String> idSet = super.jedis.smembers(followerId);
+
+		if (idSet.isEmpty())
+			return idSet;
+
+		Set<String> nameSet = new HashSet<String>(idSet.size());
+		for (String uid : idSet) {
+			User user = get(Long.valueOf(uid));
+
+			if (user == null)
+				continue;
+
+			nameSet.add(user.getName());
+		}
+
+		return nameSet;
 	}
 }

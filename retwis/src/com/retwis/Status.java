@@ -13,10 +13,12 @@ public class Status implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-	private String value;
+	private String content;
 	private long time = System.currentTimeMillis();
 	private long uid;
 	private String ip;
+
+	private transient User user;
 
 	public long getId() {
 		return id;
@@ -26,12 +28,12 @@ public class Status implements Serializable {
 		this.id = id;
 	}
 
-	public String getValue() {
-		return value;
+	public String getContent() {
+		return content;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public long getTime() {
@@ -56,6 +58,14 @@ public class Status implements Serializable {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getSaveDate() {
@@ -95,4 +105,5 @@ public class Status implements Serializable {
 			return "over " + (leftMin / 525600L) + " years ago";
 		}
 	}
+
 }
