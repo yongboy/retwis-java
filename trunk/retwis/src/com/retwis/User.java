@@ -16,8 +16,6 @@ public class User implements Serializable {
 	private String name;
 	private String pass;
 	private long date = System.currentTimeMillis();
-	
-	
 
 	public User() {
 	}
@@ -63,6 +61,18 @@ public class User implements Serializable {
 
 	public Date getSaveDate() {
 		return new Date(date);
+	}
+
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof User))
+			return false;
+
+		return this.getId() == ((User) obj).getId();
 	}
 
 	public String toString() {

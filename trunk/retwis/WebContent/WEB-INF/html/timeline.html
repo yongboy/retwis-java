@@ -5,12 +5,12 @@
   
   Posts from all users.
   <br />
-  <%= erb :_posts %>
+  <#include "_posts.html" />
 </div>
 <div class="span-7 last" id="rightcol">
   <div class="span-7 box">
     <h4>New users</h4>
-    <%= erb :_user_list, :locals => {:users => User.new_users} %>
+    <#include "_user_list.html" />
   </div>
 </div>
 <#include "footer.html" />
