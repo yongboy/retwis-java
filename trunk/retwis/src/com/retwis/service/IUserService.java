@@ -1,5 +1,7 @@
 package com.retwis.service;
 
+import java.util.Set;
+
 import com.retwis.User;
 
 public interface IUserService {
@@ -20,5 +22,13 @@ public interface IUserService {
 
 	User checkLogin(String username, String password);
 	
+	void addFollowee(long currUserId, long followeeUserId);
+//	
+//	void addFollowees(String ... userId);
+	
+	Set<String> getFollowers(long userId);
+	
 	void init();
+
+	Set<String> getFollowees(long userId);
 }

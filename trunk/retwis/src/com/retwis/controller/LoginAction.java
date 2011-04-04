@@ -41,7 +41,7 @@ public class LoginAction extends HttpServlet {
 				|| (user = userService.checkLogin(username, password)) == null
 				|| !MD5.checkMD5(password, user.getPass())) {
 			request.setAttribute("username", username);
-			request.setAttribute("login_error",
+			request.setAttribute("loginError",
 					"Incorrect username or password");
 
 			doGet(request, response);
