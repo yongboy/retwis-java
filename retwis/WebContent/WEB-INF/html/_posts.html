@@ -1,15 +1,14 @@
-
 <div id="posts" class="span-15">
   <#list posts as p>
     <div class="post">
-      <strong><%= link_to_user(post.user) %></strong>
-      <%= display_post(post) %>
+      <strong><a href="${base}/${p.user.name}">${p.user.name}</a></strong>
+      ${p.content}
       <div class="date">
-        <%= time_ago_in_words(post.created_at) %>
+        ${p.timeAgoInWords}
       </div>
     </div>
   </#list>
-  <#if posts?size == 0 %>
+  <#if posts?size = 0>
     No posts.
   </#if>
 </div>

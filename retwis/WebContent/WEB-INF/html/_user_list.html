@@ -1,0 +1,14 @@
+<#if (users?size > 0)>
+<ul class="user-list">
+	<#assign userLen = (users?size -1)>
+	<#if (userLen > 99)>
+		<#assign userLen = 99>
+	</#if>		
+	<#list users[0..userLen] as user>
+		<li><a href="${base}/${user.name}">${user.name}</a></li>
+	</#list>
+</ul>
+</#if>
+<#if (users?size > 100)>
+... and more!
+</#if>
