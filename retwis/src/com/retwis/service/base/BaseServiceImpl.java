@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 
 import redis.clients.jedis.Jedis;
 
@@ -19,7 +20,20 @@ import redis.clients.jedis.Jedis;
  */
 public abstract class BaseServiceImpl<V extends Serializable> implements
 		IBaseService<V> {
-	private static final String REDIS_HOST = "192.168.0.199";
+	private static final String REDIS_HOST;
+	static {
+		Properties prop = new Properties();
+		try {
+			prop.load(BaseServiceImpl.class
+					.getResourceAsStream("/config.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new NullPointerException("/config.propertis is not found !");
+		}
+		
+		REDIS_HOST = prop.getProperty("redis");
+	}
+
 	public Jedis jedis = new Jedis(REDIS_HOST);
 
 	public V get(String key) {
@@ -33,7 +47,7 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	public void remove(String key) {
 		jedis.del(getKey(key));
 	}
-	
+
 	public String getStr(String key) {
 		return this.jedis.get(key);
 	}
@@ -61,16 +75,16 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	public Long incr(String key) {
 		return this.jedis.incr(key);
 	}
-	
-	public void addHeadList(String key, String oneValue){
+
+	public void addHeadList(String key, String oneValue) {
 		this.jedis.lpush(key, oneValue);
 	}
 
 	@SuppressWarnings("unchecked")
 	private V byte2Object(byte[] bytes) {
-		if(bytes == null || bytes.length == 0)
+		if (bytes == null || bytes.length == 0)
 			return null;
-		
+
 		try {
 			ObjectInputStream inputStream;
 			inputStream = new ObjectInputStream(new ByteArrayInputStream(bytes));
@@ -87,9 +101,9 @@ public abstract class BaseServiceImpl<V extends Serializable> implements
 	}
 
 	private byte[] object2Bytes(V value) {
-		if(value == null)
+		if (value == null)
 			return null;
-		
+
 		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 		ObjectOutputStream outputStream;
 		try {
